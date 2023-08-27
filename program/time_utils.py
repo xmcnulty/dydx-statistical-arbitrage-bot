@@ -1,13 +1,14 @@
 from datetime import datetime, timedelta
+from candle_resolution import CandleResolution
 
 # Get timedelta of 100 units for the given interval. Valid intervals are minute, hour, day
-def get_timedelta(interval):
-    if interval == "minute":
-        return timedelta(minutes=100)
-    elif interval == "hour":
-        return timedelta(hours=100)
-    elif interval == "day":
-        return timedelta(days=100)
+def get_timedelta(resolution: CandleResolution):
+    if resolution.interval == "minute":
+        return timedelta(minutes=resolution.multiplier * 100)
+    elif resolution.interval == "hour":
+        return timedelta(hours=resolution.multiplier * 100)
+    elif resolution.interval == "day":
+        return timedelta(days=resolution.multiplier * 100)
     else:
         raise Exception("Invalid interval")
     
@@ -19,12 +20,12 @@ def formate_time(timestamp):
     Returns a dicitonary of time ranges in ISO format. Used for calls to dydx api. API only allows
     100 candles per request, so we need to make multiple requests to get the data we need.
 
-    interval: minute, hour, day
+    resolution: candle resolution
     candles: number of candles to get in multiples of 100
 """
-def get_iso_timeranges(interval, candles=400):
+def get_iso_timeranges(resolution, candles=400):
     # timedelta of interval=100
-    delta = get_timedelta(interval)
+    delta = get_timedelta(resolution=resolution)
 
     # calculate number of intervals
     intervals = candles / 100

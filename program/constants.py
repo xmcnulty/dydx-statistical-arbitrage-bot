@@ -1,12 +1,13 @@
 from dydx3.constants import API_HOST_GOERLI, API_HOST_MAINNET
 from decouple import config
+from candle_resolution import CandleResolution
 
 
 # !!! SELECT MODE !!!
 MODE = "DEVELOPMENT"
 
 # Close all positions and open orders
-ABORT_ALL_POSITIONS = True
+ABORT_ALL_POSITIONS = False
 
 # Find cointegrated pairs
 FIND_COINTEGRATED = True
@@ -15,7 +16,10 @@ FIND_COINTEGRATED = True
 PLACE_TRADES = True
 
 # Resolution
-RESOLUTION = "1HOUR"
+RESOLUTION = CandleResolution._1HOUR
+
+# Number of candles to fetch
+NUM_CANDLES = 400
 
 # Stats window for z-score
 WINDOW = 21

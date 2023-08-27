@@ -1,15 +1,9 @@
 import os
 import sys
-
-# Get the parent directory of the current script's directory
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-
-# Add the parent directory to the Python path
-sys.path.append(parent_dir)
-
 from dydx_connections import connect_dydx
+from dydx_public import construct_market_prices
 from dydx_private import abort_all_positions, place_market_order
-from constants import ABORT_ALL_POSITIONS
+from constants import ABORT_ALL_POSITIONS, FIND_COINTEGRATED
 
 if __name__ == '__main__':
     
@@ -28,4 +22,15 @@ if __name__ == '__main__':
             closed_positions = abort_all_positions(client)
         except Exception as e:
             print("Error aborting all positions", e)
+            exit(1)
+
+    # Find cointegrated pairs
+    if FIND_COINTEGRATED:
+
+        # Construct market prices
+        try:
+            print("Fetching market prices...")
+            df_market_prices = construct_market_prices(client)
+        except Exception as e:
+            print("Error constructing market prices", e)
             exit(1)
