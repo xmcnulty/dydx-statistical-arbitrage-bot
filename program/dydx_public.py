@@ -43,8 +43,37 @@ def get_historical_candles(client, market):
 # Construct market prices
 def construct_market_prices(client):
 
-    close_prices = get_historical_candles(client, 'BTC-USD')
+    tradeable_markets = []
+    markets = client.public.get_markets()
 
-    pprint(close_prices)
+    # Find tradeable pairs
+    for market in markets.data['markets'].keys():
+        market_info = markets.data['markets'][market]
 
-    pass
+        if market_info['status'] == 'ONLINE' and market_info['type'] == 'PERPETUAL':
+            tradeable_markets.append(market)
+
+    # Set initial market prices
+    close_prices = get_historical_candles(client, tradeable_markets[0])
+
+    df = pd.DataFrame(close_prices)
+
+    df.set_index('datetime', inplace=True)
+
+    # Add other prices. (Can limit in dev to reduce development time)
+    for market in tradeable_markets[1:5]:
+        additional_prices = get_historical_candles(client, market)
+        df_add = pd.DataFrame(additional_prices)
+        df_add.set_index('datetime', inplace=True)
+        df = pd.merge(df, df_add, how='outer', on='datetime', copy=False)
+        del df_add
+
+    # Check for NaNs
+    nans = df.columns[df.isna().any()].tolist()
+
+    if len(nans) > 0:
+        print("Dropping columns:")
+        print(nans)
+        df.drop(columns=nans, inplace=True)
+        
+    return df
