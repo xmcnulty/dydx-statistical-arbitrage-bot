@@ -61,7 +61,7 @@ def construct_market_prices(client):
     df.set_index('datetime', inplace=True)
 
     # Add other prices. (Can limit in dev to reduce development time)
-    for market in tradeable_markets[1:5]:
+    for market in tradeable_markets[1:]:
         additional_prices = get_historical_candles(client, market)
         df_add = pd.DataFrame(additional_prices)
         df_add.set_index('datetime', inplace=True)
@@ -75,5 +75,5 @@ def construct_market_prices(client):
         print("Dropping columns:")
         print(nans)
         df.drop(columns=nans, inplace=True)
-        
+
     return df
