@@ -51,4 +51,44 @@ def calculate_cointegration(series1, series2):
 
     coint_flag = 1 if t_check and p_value < 0.05 else 0
 
-    return coint, hedge_ratio, half_life, coint_flag
+    return coint_flag, hedge_ratio, half_life
+
+
+# Store cointegration results
+def store_cointigration_results(df_market_prices):
+    
+    # Initialization
+    markets = df_market_prices.columns.tolist()
+    criteria_met_pairs = []
+
+    # Find cointegrated pairs
+    # Start with base pair
+    for index, base_market in enumerate(markets[:-1]):
+        series_1 = df_market_prices[base_market].values.astype(float).tolist()
+
+        # Get quote pair
+        for quote_market in markets[index + 1:]:
+            series_2 = df_market_prices[quote_market].values.astype(float).tolist()
+
+            # Calculate cointegration
+            coint_flag, hedge_ratio, half_life = calculate_cointegration(series_1, series_2)
+
+            # Log pairs that meet criteria
+            if coint_flag == 1 and half_life <= MAX_HALF_LIFE and half_life > 0:
+                criteria_met_pairs.append({
+                    'base_market': base_market,
+                    'quote_market': quote_market,
+                    'hedge_ratio': hedge_ratio,
+                    'half_life': half_life
+                })
+    
+    # Create and save dataframe
+    df_criteria_met_pairs = pd.DataFrame(criteria_met_pairs)
+    df_criteria_met_pairs.to_csv('cointigrated_pairs.csv')
+
+    del df_criteria_met_pairs
+
+    # Return result
+    print('Cointegration successfully results saved to data/cointigrated_pairs.csv')
+
+    return "saved"
