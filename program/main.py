@@ -3,8 +3,9 @@ import sys
 from dydx_connections import connect_dydx
 from dydx_public import construct_market_prices
 from dydx_private import abort_all_positions, place_market_order
-from constants import ABORT_ALL_POSITIONS, FIND_COINTEGRATED
+from constants import ABORT_ALL_POSITIONS, FIND_COINTEGRATED, PLACE_TRADES
 from cointegration import store_cointigration_results
+from pairs_trade_entry import open_positions
 
 if __name__ == '__main__':
     
@@ -46,4 +47,13 @@ if __name__ == '__main__':
                 exit(1)
         except Exception as e:
             print("Error storing cointegrated pairs:", e)
+            exit(1)
+
+    # Find and place trades
+    if PLACE_TRADES:
+        try:
+            print("Finding trade opportunities...")
+            open_positions(client)
+        except Exception as e:
+            print("Error finding trade opportunities", e)
             exit(1)

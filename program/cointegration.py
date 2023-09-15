@@ -84,11 +84,11 @@ def store_cointigration_results(df_market_prices):
     
     # Create and save dataframe
     df_criteria_met_pairs = pd.DataFrame(criteria_met_pairs)
-    df_criteria_met_pairs.to_csv('cointigrated_pairs.csv')
+    df_criteria_met_pairs.to_csv('cointegrated_pairs.csv')
 
     del df_criteria_met_pairs
 
     # Return result
-    print('Cointegration successfully results saved to data/cointigrated_pairs.csv')
+    print('Cointegration successfully results saved to data/cointegrated_pairs.csv')
 
     return "saved"

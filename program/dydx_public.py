@@ -36,7 +36,6 @@ def get_historical_candles(client, market):
 
         # Format and return data
         close_prices.reverse()
-
         return close_prices
 
 
@@ -77,3 +76,21 @@ def construct_market_prices(client):
         df.drop(columns=nans, inplace=True)
 
     return df
+
+def get_candles_recent(client, market):
+    close_prices = []
+
+    # Protect API
+    time.sleep(0.2)
+
+    # get candles
+    candles = client.public.get_candles(market=market, resolution=str(RESOLUTION), limit=100)
+
+    # Structure data
+    for candle in candles.data['candles']:
+        close_prices.append(candle['close'])
+
+    close_prices.reverse()
+    prices_result = np.array(close_prices).astype(np.float)
+
+    return prices_result

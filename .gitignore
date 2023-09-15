@@ -3,4 +3,4 @@ venv
 *.pyc
 __pycache__/
 program/__pycache__
-program/cointigrated_pairs.csv
+program/*.csv

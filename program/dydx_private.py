@@ -2,6 +2,20 @@ from datetime import datetime, timedelta
 from format_utils import format_price
 import time
 
+# Returns true if client has open positions for market
+def has_open_positions(client, market):
+
+    # Protect API
+    time.sleep(0.5)
+
+    all_positions = client.private.get_positions(
+        market=market,
+        status="OPEN"
+
+    )
+
+    return len(all_positions.data["positions"]) > 0
+
 # Check the status of an order
 def check_order_status(client, order_id):
     order = client.private.get_order(order_id)

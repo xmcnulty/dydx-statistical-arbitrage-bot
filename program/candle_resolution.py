@@ -10,8 +10,8 @@ class CandleResolution(Enum):
     _1MINUTE = (1, "minute")
 
     def __init__(self, multiplier, interval):
-        self.multiplier = multiplier
-        self.interval = interval
+        self.multiplier: int = multiplier
+        self.interval: str = interval
 
     def __str__(self):
         interval_string = ""
