@@ -7,10 +7,12 @@ from candle_resolution import CandleResolution
 MODE = "DEVELOPMENT"
 
 # Close all positions and open orders
-ABORT_ALL_POSITIONS = True
+ABORT_ALL_POSITIONS = False
 
 # Find cointegrated pairs
 FIND_COINTEGRATED = True
+
+MANAGE_EXITS = True
 
 # Place trades
 PLACE_TRADES = True
