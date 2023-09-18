@@ -7,7 +7,7 @@ from candle_resolution import CandleResolution
 MODE = "DEVELOPMENT"
 
 # Close all positions and open orders
-ABORT_ALL_POSITIONS = False
+ABORT_ALL_POSITIONS = True
 
 # Find cointegrated pairs
 FIND_COINTEGRATED = True

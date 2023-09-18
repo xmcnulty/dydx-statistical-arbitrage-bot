@@ -60,7 +60,7 @@ def open_positions(client):
                 if not has_base_position and not has_open_position:
                     # determine trade side
                     base_side = ORDER_SIDE_BUY if z_score < 0 else ORDER_SIDE_SELL
-                    quote_side = ORDER_SIDE_SELL if z_score > 0 else ORDER_SIDE_BUY
+                    quote_side = ORDER_SIDE_BUY if z_score > 0 else ORDER_SIDE_SELL
 
                     # get acceptable price. format to string.
                     base_price = series_1[-1]
@@ -104,4 +104,36 @@ def open_positions(client):
                             break
 
                         # create bot agent
-                        print(base_market, base_side, base_quantity, accept_base_price)
+                        bot_agent = BotAgent(
+                            client,
+                            market_1=base_market,
+                            market_2=quote_market,
+                            base_side=base_side,
+                            base_size=base_quantity,
+                            base_price=accept_base_price,
+                            quote_side=quote_side,
+                            quote_size=quote_quantity,
+                            quote_price=accept_quote_price,
+                            accept_failsafe_base_price=accept_fail_base_price,
+                            z_score=z_score,
+                            half_life=half_life,
+                            hedge_ratio=hedge_ratio
+                        )
+
+                        # open trades
+                        bot_open_dict = bot_agent.open_trades()
+
+                        # handle succes in opening trades
+                        if bot_open_dict['pair_status'] == 'LIVE':
+                            bot_agents.append(bot_open_dict)
+
+                            del(bot_open_dict)
+
+                            print('Trade status: Live')
+                            print('---')
+
+    # save agents
+    print(f'Success: {len(bot_agents)}')
+    if len(bot_agents) > 0:
+        with open('bot_agents.json', 'w') as f:
+            json.dump(bot_agents, f)

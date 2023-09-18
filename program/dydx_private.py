@@ -18,9 +18,12 @@ def has_open_positions(client, market):
 
 # Check the status of an order
 def check_order_status(client, order_id):
-    order = client.private.get_order(order_id)
+    order = client.private.get_order_by_id(order_id)
     
-    return order.data["status"]
+    if order.data and "order" in order.data:
+        return order.data["order"]["status"]
+
+    return "FAILED"
 
 # Place market order
 def place_market_order(client, market, side, size, price, reduce_only):

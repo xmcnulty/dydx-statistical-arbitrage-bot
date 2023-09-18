@@ -122,6 +122,7 @@ class BotAgent:
 
         # Abort if order failed.
         if order_status_m1 != "live":
+            print(f"{self.market_1}: failed to fill..")
             self.order_dict["pair_status"] = "ERROR"
             self.order_dict["comments"] = f"{self.market_1}: failed to fill.."
             return self.order_dict
