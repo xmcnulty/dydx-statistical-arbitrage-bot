@@ -59,13 +59,13 @@ def manage_trade_exits(client):
         time.sleep(0.5)
 
         # get order info for market 1 per exchange
-        order_m1 = client.private.get_order_by_id(position["order_m1_id"]).data["order"]
+        order_m1 = client.private.get_order_by_id(position["order_id_m1"]).data["order"]
         order_m1_market = order_m1["market"]
         order_m1_size = order_m1["size"]
         order_m1_side = order_m1["side"]
 
         # get order info for market 2 per exchange
-        order_m2 = client.private.get_order_by_id(position["order_m2_id"]).data["order"]
+        order_m2 = client.private.get_order_by_id(position["order_id_m2"]).data["order"]
         order_m2_market = order_m2["market"]
         order_m2_size = order_m2["size"]
         order_m2_side = order_m2["side"]
