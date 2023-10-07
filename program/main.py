@@ -22,6 +22,9 @@ if __name__ == '__main__':
         try:
             print("Aborting all positions...")
             closed_positions = abort_all_positions(client)
+
+            print("Aborted positions:")
+            pprint(closed_positions)
         except Exception as e:
             print("Error aborting all positions", e)
             exit(1)

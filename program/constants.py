@@ -4,7 +4,9 @@ from candle_resolution import CandleResolution
 
 
 # !!! SELECT MODE !!!
-MODE = "DEVELOPMENT"
+__DEV = "DEVELOPMENT"
+__PROD = "PRODUCTION"
+MODE = __DEV
 
 # Close all positions and open orders
 ABORT_ALL_POSITIONS = False
@@ -12,10 +14,10 @@ ABORT_ALL_POSITIONS = False
 # Find cointegrated pairs
 FIND_COINTEGRATED = True
 
-MANAGE_EXITS = True
+MANAGE_EXITS = False
 
 # Place trades
-PLACE_TRADES = True
+PLACE_TRADES = False
 
 # Resolution
 RESOLUTION = CandleResolution._1HOUR
